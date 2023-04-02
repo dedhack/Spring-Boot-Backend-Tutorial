@@ -1,5 +1,6 @@
 package com.izhar.fullstackbackend.controller;
 
+import com.izhar.fullstackbackend.exception.UserNotFoundException;
 import com.izhar.fullstackbackend.model.User;
 import com.izhar.fullstackbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,12 @@ public class UserController {
     @GetMapping("/users")
     List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping("/user/{id}")
+    User getUserById(@PathVariable Long id){
+        // we will throw an error if user id is not found
+        return userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException(id));
     }
 }
